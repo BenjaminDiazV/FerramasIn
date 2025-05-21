@@ -1,14 +1,16 @@
 from flask import Blueprint, jsonify
-from Api.services.product_service import ProductService
+from api.services import producto_service
 
-def register_routes(app, mysql):
-    api_bp = Blueprint('Api', __name__)
+producto_bp = Blueprint('productos', __name__, url_prefix='/productos')
 
-    product_service = ProductService(mysql)
+@producto_bp.route('/', methods=['GET'])
+def get_productos():
+    productos = producto_service.obtener_todos_productos()
+    return jsonify([producto.to_json() for producto in productos])
 
-    @api_bp.route('/productos', methods=['GET'])
-    def get_products():
-        products = product_service.get_all_products()
-        return jsonify(products)
-    
-    app.register_blueprint(api_bp)
+@producto_bp.route('/<int:id_prod>', methods=['GET'])
+def get_producto(id_prod):
+    producto = producto_service.obtener_producto_por_id(id_prod)
+    if producto:
+        return jsonify(producto.to_json())
+    return jsonify({'message': 'Producto no encontrado'}), 404
