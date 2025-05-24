@@ -7,66 +7,39 @@ import {
   IonList,
   IonItem,
   IonLabel,
+  IonButton,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
-import { obtenerProductos } from "../producto.service";
+import axios from "axios";
 
 interface Producto {
   id_prod: number;
   nombre: string;
   categoria: string;
   marca: string;
-  cod_marca: string;
   precio: number;
+  precio_dolar?: number;
 }
 
 const ListaProductos: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const [mostrarDolares, setMostrarDolares] = useState(false);
 
   useEffect(() => {
-    const cargarProductos = async () => {
-      setLoading(true);
-      try {
-        const data = await obtenerProductos();
-        setProductos(data);
-      } catch (err: any) {
-        setError("Error al cargar los productos.");
-        console.error(err);
-      } finally {
-        setLoading(false);
-      }
-    };
-
     cargarProductos();
   }, []);
 
-  if (loading) {
-    return (
-      <IonPage>
-        <IonHeader>
-          <IonTitle>Cargando Productos...</IonTitle>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <p>Cargando la lista de productos...</p>
-        </IonContent>
-      </IonPage>
-    );
-  }
+  const cargarProductos = async () => {
+    const res = await axios.get("http://localhost:5000/productos/");
+    setProductos(res.data);
+    setMostrarDolares(false);
+  };
 
-  if (error) {
-    return (
-      <IonPage>
-        <IonHeader>
-          <IonTitle>Error</IonTitle>
-        </IonHeader>
-        <IonContent className="ion-padding">
-          <p>{error}</p>
-        </IonContent>
-      </IonPage>
-    );
-  }
+  const cargarProductosEnDolares = async () => {
+    const res = await axios.get("http://localhost:5000/productos/en_dolares");
+    setProductos(res.data);
+    setMostrarDolares(true);
+  };
 
   return (
     <IonPage>
@@ -74,6 +47,20 @@ const ListaProductos: React.FC = () => {
         <IonTitle>Lista de Productos</IonTitle>
       </IonHeader>
       <IonContent>
+        <IonButton
+          onClick={cargarProductosEnDolares}
+          expand="block"
+          color="primary"
+        >
+          Mostrar precios en dólares
+        </IonButton>
+        <IonButton
+          onClick={cargarProductos}
+          expand="block"
+          color="secondary"
+        >
+          Mostrar precios en pesos
+        </IonButton>
         <IonList>
           {productos.map((producto) => (
             <IonItem key={producto.id_prod}>
@@ -81,7 +68,12 @@ const ListaProductos: React.FC = () => {
                 <h2>{producto.nombre}</h2>
                 <p>Categoría: {producto.categoria}</p>
                 <p>Marca: {producto.marca}</p>
-                <p>Precio: ${producto.precio}</p>
+                <p>
+                  Precio:{" "}
+                  {mostrarDolares && producto.precio_dolar !== undefined
+                    ? `$${producto.precio_dolar} USD`
+                    : `$${producto.precio} CLP`}
+                </p>
               </IonLabel>
             </IonItem>
           ))}

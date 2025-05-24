@@ -28,6 +28,9 @@ def get_dolar():
         return jsonify(result.to_dict())
     return jsonify(result)
 
+
+#agregar endpoint para obtener productos en dolares
+#localhost:5000/productos/en_dolares
 @producto_bp.route('/en_dolares', methods=['GET'])
 def get_productos_en_dolares():
     productos = producto_service.obtener_todos_productos()
