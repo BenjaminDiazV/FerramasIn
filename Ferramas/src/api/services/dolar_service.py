@@ -1,6 +1,9 @@
 from api.models.dolar import Dolar
 from api.db.external_api import ExternalAPI
 
+
+
+
 class DolarService:
     def get_dolar_hoy(self):
         try:

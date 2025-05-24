@@ -27,3 +27,21 @@ def get_dolar():
     if hasattr(result, 'to_dict'):
         return jsonify(result.to_dict())
     return jsonify(result)
+
+@producto_bp.route('/en_dolares', methods=['GET'])
+def get_productos_en_dolares():
+    productos = producto_service.obtener_todos_productos()
+    dolar = dolar_service.get_dolar_hoy()
+    if hasattr(dolar, 'valor'):
+        valor_dolar = dolar.valor
+    elif isinstance(dolar, dict) and 'valor' in dolar:
+        valor_dolar = dolar['valor']
+    else:
+        return jsonify({'error': 'No se pudo obtener el valor del dólar'}), 500
+
+    productos_dolares = []
+    for producto in productos:
+        producto_dict = producto.to_json()
+        producto_dict['precio_dolar'] = round(producto_dict['precio'] / valor_dolar, 2)
+        productos_dolares.append(producto_dict)
+    return jsonify(productos_dolares)
