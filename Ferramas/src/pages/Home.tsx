@@ -41,6 +41,14 @@ const ListaProductos: React.FC = () => {
     setMostrarDolares(true);
   };
 
+  const handleToggle = async () => {
+    if (mostrarDolares) {
+      await cargarProductos();
+    } else {
+      await cargarProductosEnDolares();
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -48,18 +56,13 @@ const ListaProductos: React.FC = () => {
       </IonHeader>
       <IonContent>
         <IonButton
-          onClick={cargarProductosEnDolares}
+          onClick={handleToggle}
           expand="block"
-          color="primary"
+          color={mostrarDolares ? "secondary" : "primary"}
         >
-          Mostrar precios en dólares
-        </IonButton>
-        <IonButton
-          onClick={cargarProductos}
-          expand="block"
-          color="secondary"
-        >
-          Mostrar precios en pesos
+          {mostrarDolares
+            ? "Mostrar precios en pesos"
+            : "Mostrar precios en dólares"}
         </IonButton>
         <IonList>
           {productos.map((producto) => (
