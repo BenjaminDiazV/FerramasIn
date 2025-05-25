@@ -12,6 +12,7 @@ import {
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 import "./Home.css";
 
 interface Producto {
@@ -26,6 +27,7 @@ interface Producto {
 const ListaProductos: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [mostrarDolares, setMostrarDolares] = useState(false);
+  const history = useHistory();
 
   useEffect(() => {
     cargarProductos();
@@ -56,6 +58,13 @@ const ListaProductos: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Lista de Productos</IonTitle>
+          <IonButton
+            slot="end"
+            color="success"
+            onClick={() => history.push("/agregar_producto")}
+            className="ferramas-btn-circular success"
+            shape="round">+</IonButton>
+
           <IonButton
             slot="end"
             onClick={handleToggle}

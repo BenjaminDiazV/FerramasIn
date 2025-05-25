@@ -48,3 +48,21 @@ def get_productos_en_dolares():
         producto_dict['precio_dolar'] = round(producto_dict['precio'] / valor_dolar, 2)
         productos_dolares.append(producto_dict)
     return jsonify(productos_dolares)
+
+### Endpoint para agregar un nuevo producto
+@producto_bp.route('/agregar_producto', methods=['POST'])
+def agregar_producto():
+    data = request.get_json()
+    nombre = data.get('nombre')
+    categoria = data.get('categoria')
+    marca = data.get('marca')
+    precio = data.get('precio')
+
+    if not all([nombre, categoria, marca, precio]):
+        return jsonify({'error': 'Faltan datos obligatorios'}), 400
+
+    nuevo_producto = producto_service.crear_producto(nombre, categoria, marca, precio)
+    if nuevo_producto:
+        return jsonify(nuevo_producto.to_json()), 201
+    else:
+        return jsonify({'error': 'No se pudo crear el producto'}), 500
