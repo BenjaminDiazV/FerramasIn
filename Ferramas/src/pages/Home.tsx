@@ -8,9 +8,11 @@ import {
   IonItem,
   IonLabel,
   IonButton,
+  IonToolbar,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import "./Home.css";
 
 interface Producto {
   id_prod: number;
@@ -52,27 +54,34 @@ const ListaProductos: React.FC = () => {
   return (
     <IonPage>
       <IonHeader>
-        <IonTitle>Lista de Productos</IonTitle>
+        <IonToolbar>
+          <IonTitle>Lista de Productos</IonTitle>
+          <IonButton
+            slot="end"
+            onClick={handleToggle}
+            className={`ferramas-btn-circular ${
+              mostrarDolares ? "usd" : "clp"
+            }`}
+            shape="round"
+          >
+            {mostrarDolares ? "USD" : "CLP"}
+          </IonButton>
+        </IonToolbar>
       </IonHeader>
-      <IonContent>
-        <IonButton
-          onClick={handleToggle}
-          expand="block"
-          color={mostrarDolares ? "secondary" : "primary"}
-        >
-          {mostrarDolares
-            ? "Mostrar precios en pesos"
-            : "Mostrar precios en dólares"}
-        </IonButton>
+      <IonContent className="ferramas-content">
         <IonList>
           {productos.map((producto) => (
-            <IonItem key={producto.id_prod}>
+            <IonItem key={producto.id_prod} className="ferramas-item">
               <IonLabel>
                 <h2>{producto.nombre}</h2>
-                <p>Categoría: {producto.categoria}</p>
-                <p>Marca: {producto.marca}</p>
                 <p>
-                  Precio:{" "}
+                  <strong>Categoría:</strong> {producto.categoria}
+                </p>
+                <p>
+                  <strong>Marca:</strong> {producto.marca}
+                </p>
+                <p>
+                  <strong>Precio:</strong>{" "}
                   {mostrarDolares && producto.precio_dolar !== undefined
                     ? `$${producto.precio_dolar} USD`
                     : `$${producto.precio} CLP`}
