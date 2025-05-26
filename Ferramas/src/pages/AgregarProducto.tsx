@@ -12,6 +12,7 @@ import {
   IonToast,
 } from "@ionic/react";
 import axios from "axios";
+import { useHistory } from "react-router-dom";
 
 const AgregarProducto: React.FC = () => {
   const [nombre, setNombre] = useState("");
@@ -20,6 +21,7 @@ const AgregarProducto: React.FC = () => {
   const [precio, setPrecio] = useState("");
   const [showToast, setShowToast] = useState(false);
   const [toastMsg, setToastMsg] = useState("");
+  const history = useHistory();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -42,11 +44,18 @@ const AgregarProducto: React.FC = () => {
     }
   };
 
+  const volverListaProductos = () => {
+    history.push("/home"); // Navega a la ruta de la lista de productos
+  };
+
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
           <IonTitle>Agregar Producto</IonTitle>
+          <IonButton slot="start" onClick={volverListaProductos}>
+            Volver
+          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">

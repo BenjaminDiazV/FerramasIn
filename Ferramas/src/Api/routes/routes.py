@@ -1,9 +1,15 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, redirect
 from api.services import producto_service
 from api.services.dolar_service import DolarService
 
+from api.services.webpay_service import webpayService
+
+
 producto_bp = Blueprint('productos', __name__, url_prefix='/productos')
+webpay_bp = Blueprint('webpay', __name__, url_prefix='/webpay')
+
 dolar_service = DolarService()
+webpay_service = webpayService()
 
 @producto_bp.route('/', methods=['GET'])
 def get_productos():
@@ -66,3 +72,26 @@ def agregar_producto():
         return jsonify(nuevo_producto.to_json()), 201
     else:
         return jsonify({'error': 'No se pudo crear el producto'}), 500
+         
+@webpay_bp.route('/crear_transaccion', methods=['GET', 'POST'])
+def crear_transaccion():
+    url = webpay_service.iniciar_pago()
+    # En lugar de intentar devolver la URL en el body, hacemos una redirección
+    return redirect(url, code=302)
+
+@webpay_bp.route('/confirmar_pago', methods=['GET', 'POST'])
+def confirmar_transaccion():
+    if request.method == 'POST':
+        token = request.form.get("token_ws")
+    else:  # Si es GET
+        token = request.args.get("token_ws")
+
+    if token:
+        response = webpay_service.confirmar_pago(token)
+        print("Respuesta de Webpay (Commit):", response)
+        estado_pago = "exitoso" if response and response.get('status') == 'AUTHORIZED' else "fallido"
+        # Redirigimos al frontend con el estado del pago como parámetro
+        return redirect(f"http://localhost:8100/confirmacion-pago?estado={estado_pago}")
+    else:
+        return jsonify({"error": "No se recibió el token de Webpay"}), 400
+    

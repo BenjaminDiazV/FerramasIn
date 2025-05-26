@@ -1,4 +1,3 @@
-// src/pages/ListaProductos.tsx
 import {
   IonContent,
   IonHeader,
@@ -14,6 +13,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import "./Home.css";
+import { iniciarPago } from "../webpay.service";
 
 interface Producto {
   id_prod: number;
@@ -53,6 +53,13 @@ const ListaProductos: React.FC = () => {
     }
   };
 
+  const handleIniciarPagoWebpay = async () => {
+    const pagoIniciado = await iniciarPago();
+    if (!pagoIniciado) {
+      console.error("No se pudo iniciar el pago.");
+    }
+  };
+
   return (
     <IonPage>
       <IonHeader>
@@ -63,7 +70,10 @@ const ListaProductos: React.FC = () => {
             color="success"
             onClick={() => history.push("/agregar_producto")}
             className="ferramas-btn-circular success"
-            shape="round">+</IonButton>
+            shape="round"
+          >
+            +
+          </IonButton>
 
           <IonButton
             slot="end"
@@ -99,6 +109,11 @@ const ListaProductos: React.FC = () => {
             </IonItem>
           ))}
         </IonList>
+
+        {/* Botón para iniciar el pago con Webpay */}
+        <IonButton expand="full" onClick={handleIniciarPagoWebpay} className="webpay-button">
+          Ir a Pagar con Webpay
+        </IonButton>
       </IonContent>
     </IonPage>
   );
