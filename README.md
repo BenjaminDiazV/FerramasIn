@@ -17,7 +17,7 @@ Porfavor asegurarse de instalar los servicios:
 
 ---
 
-## Backend Setup (Python/Flask)
+## Configuracion de Backend (Python/Flask)
 
 1. **Instalar dependencias de Python**  
 
