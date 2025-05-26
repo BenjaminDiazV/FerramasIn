@@ -53,10 +53,23 @@ const ListaProductos: React.FC = () => {
     }
   };
 
-  const handleIniciarPagoWebpay = async () => {
-    const pagoIniciado = await iniciarPago();
-    if (!pagoIniciado) {
-      console.error("No se pudo iniciar el pago.");
+  const iniciarPagoWebpay = async () => {
+    const productIds = productos.map((producto) => producto.id_prod); // Obtén los IDs de los productos mostrados
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/webpay/crear_transaccion",
+        {
+          product_ids: productIds,
+        }
+      );
+      if (response.data && response.data.url) {
+        window.location.href =
+          response.data.url + "?token_ws=" + response.data.token;
+      } else {
+        console.error("No se recibió la URL o el token de Webpay.");
+      }
+    } catch (error: any) {
+      console.error("Error al iniciar el pago con Webpay:", error);
     }
   };
 
@@ -111,7 +124,7 @@ const ListaProductos: React.FC = () => {
         </IonList>
 
         {/* Botón para iniciar el pago con Webpay */}
-        <IonButton expand="full" onClick={handleIniciarPagoWebpay} className="webpay-button">
+        <IonButton expand="full" onClick={iniciarPagoWebpay} className="webpay-button">
           Ir a Pagar con Webpay
         </IonButton>
       </IonContent>

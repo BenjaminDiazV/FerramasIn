@@ -11,6 +11,15 @@ def obtener_todos_productos():
         productos.append(Producto(*row))
     return productos
 
+def obtener_producto_por_id(id_prod):
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT id_prod, nombre, categoria, marca, cod_marca, precio FROM productos WHERE id_prod = %s", (id_prod,))
+    data = cur.fetchone()
+    cur.close()
+    if data:
+        return Producto(*data)
+    return None
+
 def crear_producto(nombre, categoria, marca, precio):
     cur = mysql.connection.cursor()
     try:

@@ -73,11 +73,23 @@ def agregar_producto():
     else:
         return jsonify({'error': 'No se pudo crear el producto'}), 500
          
-@webpay_bp.route('/crear_transaccion', methods=['GET', 'POST'])
+@webpay_bp.route('/crear_transaccion', methods=['POST'])  # Ahora es POST
 def crear_transaccion():
-    url = webpay_service.iniciar_pago()
-    # En lugar de intentar devolver la URL en el body, hacemos una redirección
-    return redirect(url, code=302)
+    data = request.get_json()
+    product_ids = data.get('product_ids', [])
+    total_amount = 0
+
+    if product_ids:
+        productos = [producto_service.obtener_producto_por_id(id_prod) for id_prod in product_ids]
+        for producto in productos:
+            if producto:
+                total_amount += producto.precio
+
+    if total_amount > 0:
+        transaction = webpay_service.iniciar_pago(total_amount) # Pasa el monto total
+        return jsonify({'url': transaction['url'], 'token': transaction['token']})
+    else:
+        return jsonify({'error': 'No se seleccionaron productos o no se encontraron'}), 400
 
 @webpay_bp.route('/confirmar_pago', methods=['GET', 'POST'])
 def confirmar_transaccion():
