@@ -62,7 +62,8 @@ Porfavor asegurarse de instalar los servicios:
 ## Inciando el Proyecto
 
 - **Backend:**
-- en el directorio /FerramasIn/Ferramas/src 
+- en el directorio /FerramasIn/Ferramas/src
+- en el powershell
   ```bash
   py app.py
   ```
