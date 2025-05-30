@@ -1,6 +1,6 @@
 import React from "react";
 import { IonIcon } from "@ionic/react";
-import { logInOutline } from "ionicons/icons";
+import { personOutline } from "ionicons/icons";
 import "./Home.css";
 
 const Header: React.FC = () => {
@@ -16,8 +16,8 @@ const Header: React.FC = () => {
         className="ferramas-header-logo"></img>
       
       <button className="ferramas-login-btn">
-        <IonIcon icon={logInOutline} className="ferramas-login-icon" />
-        Iniciar Sesión
+        <IonIcon icon={personOutline} className="ferramas-login-icon" />
+        Subcribirse
       </button>
     </header>
   );
