@@ -30,7 +30,6 @@ Porfavor asegurarse de instalar los servicios:
    ```bash
    pip install transbank
    ```
-
 ---
 
 ## Configurar base de datos
@@ -48,7 +47,11 @@ Porfavor asegurarse de instalar los servicios:
    ```bash
    npm install
    ```
+2. Instalar iconos de ionic en command promt
 
+   ```bash
+   npm install @ionic/react ionicons
+   ```
 ---
 
 ##  Notas adicionales
