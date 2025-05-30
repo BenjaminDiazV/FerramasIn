@@ -15,6 +15,10 @@ import { useHistory } from "react-router-dom";
 import "./Home.css";
 import { iniciarPago } from "../webpay.service";
 
+import Footer from "./Footer";
+
+
+
 interface Producto {
   id_prod: number;
   nombre: string;
@@ -128,6 +132,8 @@ const ListaProductos: React.FC = () => {
           Ir a Pagar con Webpay
         </IonButton>
       </IonContent>
+      <Footer />
+      
     </IonPage>
   );
 };
