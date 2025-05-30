@@ -109,3 +109,38 @@
   color: #3730a3;
 }
 
+.ferramas-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: linear-gradient(90deg, #6366f1 0%, #f59e42 100%);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.ferramas-header-logo {
+  height: 100px;
+}
+
+.ferramas-login-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.5rem 1.5rem;
+  background-color: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-right: 10px; /* Ajusta el margen izquierdo para alinear con el logo */
+}
+
+.ferramas-login-btn:hover,
+.ferramas-login-btn:focus {
+  background-color: #125ea2;
+}
+
+.ferramas-login-icon {
+  font-size: 20px;
+}

@@ -11,6 +11,7 @@ import "./Home.css";
 const Footer: React.FC = () => (
   <IonFooter>
     <IonToolbar className="ferramas-footer-toolbar">
+      
       <div className="ferramas-footer-content">
         <IonTitle className="ferramas-footer-title">
           © {new Date().getFullYear()} Ferramas | Síguenos:

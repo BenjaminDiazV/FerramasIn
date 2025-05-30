@@ -16,7 +16,7 @@ import "./Home.css";
 import { iniciarPago } from "../webpay.service";
 
 import Footer from "./Footer";
-
+import Header from "./Header";
 
 
 interface Producto {
@@ -79,6 +79,7 @@ const ListaProductos: React.FC = () => {
 
   return (
     <IonPage>
+      <Header />
       <IonHeader>
         <IonToolbar>
           <IonTitle>Lista de Productos</IonTitle>
