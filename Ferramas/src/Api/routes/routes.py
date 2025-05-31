@@ -4,7 +4,9 @@ from api.services.dolar_service import DolarService
 
 from api.services.webpay_service import webpayService
 
+from api.services import usuario_service
 
+usuario_bp = Blueprint('usuarios', __name__, url_prefix='/usuarios')
 producto_bp = Blueprint('productos', __name__, url_prefix='/productos')
 webpay_bp = Blueprint('webpay', __name__, url_prefix='/webpay')
 
@@ -106,4 +108,19 @@ def confirmar_transaccion():
         return redirect(f"http://localhost:8100/confirmacion-pago?estado={estado_pago}")
     else:
         return jsonify({"error": "No se recibió el token de Webpay"}), 400
+    
+
+#Endpoint para registrar un nuevo usuario
+@usuario_bp.route('/registrar', methods=['POST'])
+def registrar_usuario():
+    data = request.get_json()
+    email = data.get('email')
+    if not email:
+        return jsonify({'error': 'Email requerido'}), 400
+    # Puedes pasar None para id_email si es autoincremental
+    usuario = usuario_service.crear_usuario(None, email)
+    if usuario:
+        return jsonify(usuario.to_dict()), 201
+    else:
+        return jsonify({'error': 'No se pudo registrar el usuario'}), 500
     
