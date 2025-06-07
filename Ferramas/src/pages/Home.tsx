@@ -8,6 +8,7 @@ import {
   IonLabel,
   IonButton,
   IonToolbar,
+  IonAlert,
 } from "@ionic/react";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
@@ -17,7 +18,6 @@ import { iniciarPago } from "../webpay.service";
 
 import Footer from "./Footer";
 import Header from "./Header";
-
 
 interface Producto {
   id_prod: number;
@@ -32,6 +32,15 @@ const ListaProductos: React.FC = () => {
   const [productos, setProductos] = useState<Producto[]>([]);
   const [mostrarDolares, setMostrarDolares] = useState(false);
   const history = useHistory();
+  const [showTransferAlert, setShowTransferAlert] = useState(false);
+
+  const datosTransferencia = `
+Banco: Banco Ejemplo
+Cuenta: 123456789
+Tipo: Cuenta Corriente
+Nombre: Ferramas Ltda.
+RUT: 12.345.678-9
+Correo: pagos@ferramas.cl`;
 
   useEffect(() => {
     cargarProductos();
@@ -129,12 +138,39 @@ const ListaProductos: React.FC = () => {
         </IonList>
 
         {/* Botón para iniciar el pago con Webpay */}
-        <IonButton expand="full" onClick={iniciarPagoWebpay} className="webpay-button">
+        <IonButton
+          expand="full"
+          onClick={iniciarPagoWebpay}
+          className="webpay-button"
+        >
           Ir a Pagar con Webpay
         </IonButton>
+        {/* Botón para mostrar datos de transferencia */}
+        <IonButton
+          expand="full"
+          color="secondary"
+          onClick={() => setShowTransferAlert(true)}
+          style={{ marginTop: 12 }}
+        >
+          Ver datos de transferencia bancaria
+        </IonButton>
+
+        <IonAlert
+          isOpen={showTransferAlert}
+          onDidDismiss={() => setShowTransferAlert(false)}
+          header="Datos de Transferencia Bancaria"
+          message={`${datosTransferencia}`}
+          buttons={[
+            {
+              text: "Cerrar",
+              role: "cancel",
+              handler: () => setShowTransferAlert(false),
+            },
+          ]}
+          cssClass="transfer-alert"
+        />
       </IonContent>
       <Footer />
-      
     </IonPage>
   );
 };

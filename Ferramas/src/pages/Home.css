@@ -144,3 +144,13 @@
 .ferramas-login-icon {
   font-size: 20px;
 }
+
+.transfer-alert .alert-message {
+  text-align: center;
+  white-space: pre-line;
+  font-size: 1rem;
+  color: #f6f6f6;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  line-height: 1.5;
+  padding: 8px 0;
+}
