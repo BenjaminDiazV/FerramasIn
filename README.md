@@ -51,9 +51,18 @@ Porfavor asegurarse de instalar los servicios:
 1. Instalar las dependencias de Node.js (inciar en el direcitorio frontend):
 
    ```bash
-   npm install -g npm
+   npm install -g npm npm i --save-dev @types/react
    ```
-2. Instalar iconos de ionic en command promt
+2. Instalar React
+
+   ```bash
+   npm i --save-dev @types/react
+   ```
+    ```bash
+   npm install react
+   ```
+   
+3. Instalar iconos de ionic en command promt
 
    ```bash
    npm install @ionic/react ionicons
