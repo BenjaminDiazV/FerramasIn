@@ -5,14 +5,15 @@ import {
   IonTitle,
   IonButton,
   IonToolbar,
+  IonButtons,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useHistory } from "react-router-dom";
 
 const ConfirmacionPago: React.FC = () => {
   const location = useLocation();
   const [estadoPago, setEstadoPago] = useState<string | null>(null);
-  const navigate = useNavigate();
+  const history = useHistory();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -21,18 +22,17 @@ const ConfirmacionPago: React.FC = () => {
   }, [location.search]);
 
   const volverListaProductos = () => {
-    navigate("/home"); // Navega a la ruta de la lista de productos
+    history.push("/home"); // Navega a la ruta de la lista de productos
   };
-
 
   return (
     <IonPage>
       <IonHeader>
         <IonToolbar>
+          <IonButtons slot="start">
+            <IonButton onClick={volverListaProductos}>Volver</IonButton>
+          </IonButtons>
           <IonTitle>Confirmación de Pago</IonTitle>
-          <IonButton slot="start" onClick={volverListaProductos}>
-            Volver
-          </IonButton>
         </IonToolbar>
       </IonHeader>
       <IonContent className="ion-padding">

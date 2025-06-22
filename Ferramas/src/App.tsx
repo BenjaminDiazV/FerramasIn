@@ -3,7 +3,7 @@ import { IonApp, IonRouterOutlet, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import Home from './pages/Home';
 import AgregarProducto from './pages/AgregarProducto';
-import confirmacionPago from './pages/confirmacionPago';
+import ConfirmacionPago from './pages/confirmacionPago';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -41,14 +41,10 @@ const App: React.FC = () => (
   <IonApp>
     <IonReactRouter>
       <IonRouterOutlet>
-        <Route exact path="/home">
-          <Home />
-        </Route>
-        <Route exact path="/">
-          <Redirect to="/home" />
-        </Route>
-        <Route path="/agregar_producto" component={AgregarProducto} exact />
-        <Route path="/confirmacion-pago" component={confirmacionPago} exact />
+        <Route path="/home" component={Home} />
+        <Route exact path="/" render={() => <Redirect to="/home" />} />
+        <Route path="/agregar_producto" component={AgregarProducto} />
+        <Route path="/confirmacion-pago" component={ConfirmacionPago} />
       </IonRouterOutlet>
     </IonReactRouter>
   </IonApp>
