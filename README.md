@@ -64,8 +64,15 @@ Porfavor asegurarse de instalar los servicios:
    ```bash
    npm install react-router-dom @types/react-router-dom
    ```
+## Instalar Ionic
+
+1. Instalacion de CLI Ionic
+
+   ```bash
+   npm install -g @ionic/cli
+   ```
    
-3. Instalar iconos de ionic en command promt
+2. Instalar iconos de ionic en command promt
 
    ```bash
    npm install @ionic/react ionicons
