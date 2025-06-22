@@ -18,7 +18,7 @@ const Header: React.FC = () => {
 
       <button className="ferramas-login-btn" onClick={() => setShowAlert(true)}>
         <IonIcon icon={personOutline} className="ferramas-login-icon" />
-        Subcribirse
+        ¡Subcribete!
       </button>
 
       <IonAlert
