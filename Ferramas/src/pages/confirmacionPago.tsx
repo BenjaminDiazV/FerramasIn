@@ -7,12 +7,12 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import React, { useEffect, useState } from "react";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const ConfirmacionPago: React.FC = () => {
   const location = useLocation();
   const [estadoPago, setEstadoPago] = useState<string | null>(null);
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(location.search);
@@ -21,7 +21,7 @@ const ConfirmacionPago: React.FC = () => {
   }, [location.search]);
 
   const volverListaProductos = () => {
-    history.push("/home"); // Navega a la ruta de la lista de productos
+    navigate("/home"); // Navega a la ruta de la lista de productos
   };
 
 
