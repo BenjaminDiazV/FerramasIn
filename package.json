@@ -1,7 +1,7 @@
 {
   "dependencies": {
-    "@ionic/react": "^8.5.8",
+    "@ionic/react": "^8.6.2",
     "axios": "^1.9.0",
-    "ionicons": "^8.0.8"
+    "ionicons": "^8.0.9"
   }
 }
