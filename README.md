@@ -51,7 +51,7 @@ Porfavor asegurarse de instalar los servicios:
 1. Instalar las dependencias de Node.js (inciar en el direcitorio frontend):
 
    ```bash
-   npm install
+   npm install -g npm
    ```
 2. Instalar iconos de ionic en command promt
 
