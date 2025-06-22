@@ -59,10 +59,19 @@ Porfavor asegurarse de instalar los servicios:
    npm i --save-dev @types/react
    ```
    ```bash
-   npm install react npm install react-router-dom @types/react-router-dom
+   npm install react 
    ```
    ```bash
    npm install react-router-dom @types/react-router-dom
+   ```
+   ```bash
+   npm i --save-dev @types/react 
+   ```
+   ```bash
+   npm install react react-dom  npm i --save-dev @types/react-dom
+   ```
+   ```bash
+   npm i --save-dev @types/react-dom
    ```
 ## Instalar Ionic
 
