@@ -22,10 +22,16 @@ Porfavor asegurarse de instalar los servicios:
 1. **Instalar dependencias de Python**  
 
    ```bash
-   pip install flask flask-mysqldb flask-cors
+   pip install flask 
+   ```
+   ```bash
+   pip install flask-mysqldb
+   ```
+   ```bash
+   pip install flask-cors
    ```
 
-2. **Instalar Transbank SDK**
+3. **Instalar Transbank SDK**
 
    ```bash
    pip install transbank
