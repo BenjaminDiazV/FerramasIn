@@ -34,7 +34,7 @@ Porfavor asegurarse de instalar los servicios:
 3. **Instalar Transbank SDK**
 
    ```bash
-   pip install transbank
+   pip install transbank-sdk
    ```
 ---
 
