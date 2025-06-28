@@ -16,7 +16,33 @@ webpay_service = webpayService()
 @producto_bp.route('/', methods=['GET'])
 def get_productos():
     productos = producto_service.obtener_todos_productos()
-    return jsonify([producto.to_json() for producto in productos])
+    email_usuario = request.args.get('email')  # Obtener email del query parameter
+    
+    print(f"DEBUG: Email recibido en productos: {email_usuario}")
+    
+    productos_json = []
+    for producto in productos:
+        producto_dict = producto.to_json()
+        
+        # Verificar si el usuario tiene descuento
+        if email_usuario:
+            usuario = usuario_service.obtener_usuario_por_email(email_usuario)
+            print(f"DEBUG: Usuario encontrado: {usuario}")
+            if usuario:
+                print(f"DEBUG: Usuario tiene contraseña: {usuario.password is not None}")
+            
+            if usuario and usuario.password:  # Usuario registrado con contraseña
+                precio_original = producto_dict['precio']
+                descuento = precio_original * 0.15  # 15% de descuento
+                producto_dict['precio_original'] = precio_original
+                producto_dict['precio'] = round(precio_original - descuento, 2)
+                producto_dict['descuento'] = 15
+                producto_dict['ahorro'] = round(descuento, 2)
+                print(f"DEBUG: Aplicando descuento - Precio original: {precio_original}, Precio con descuento: {producto_dict['precio']}")
+        
+        productos_json.append(producto_dict)
+    
+    return jsonify(productos_json)
 
 @producto_bp.route('/<int:id_prod>', methods=['GET'])
 def get_producto(id_prod):
@@ -110,17 +136,71 @@ def confirmar_transaccion():
         return jsonify({"error": "No se recibió el token de Webpay"}), 400
     
 
+#Endpoint para suscripción (solo email)
+@usuario_bp.route('/suscribir', methods=['POST'])
+def suscribir_usuario():
+    data = request.get_json()
+    email = data.get('email')
+    
+    if not email:
+        return jsonify({'error': 'Email requerido'}), 400
+    
+    # Verificar si el email ya existe
+    usuario_existente = usuario_service.obtener_usuario_por_email(email)
+    if usuario_existente:
+        return jsonify({'message': 'El email ya está registrado'}), 200
+    
+    # Crear suscripción simple (sin contraseña)
+    usuario = usuario_service.crear_suscripcion(email)
+    if usuario:
+        return jsonify({'message': 'Suscripción exitosa', 'email': email}), 201
+    else:
+        return jsonify({'error': 'No se pudo procesar la suscripción'}), 500
+
 #Endpoint para registrar un nuevo usuario
 @usuario_bp.route('/registrar', methods=['POST'])
 def registrar_usuario():
     data = request.get_json()
     email = data.get('email')
+    password = data.get('password')
+    nombre = data.get('nombre')
+    
     if not email:
         return jsonify({'error': 'Email requerido'}), 400
-    # Puedes pasar None para id_email si es autoincremental
-    usuario = usuario_service.crear_usuario(None, email)
+    
+    # Verificar si el usuario ya existe
+    usuario_existente = usuario_service.obtener_usuario_por_email(email)
+    if usuario_existente:
+        return jsonify({'error': 'El usuario ya existe'}), 400
+    
+    usuario = usuario_service.crear_usuario(None, email, password, nombre)
     if usuario:
         return jsonify(usuario.to_dict()), 201
     else:
         return jsonify({'error': 'No se pudo registrar el usuario'}), 500
+
+#Endpoint para verificar descuento por email
+@usuario_bp.route('/verificar_descuento/<email>', methods=['GET'])
+def verificar_descuento(email):
+    usuario = usuario_service.obtener_usuario_por_email(email)
+    if usuario and usuario.password:  # Solo usuarios con contraseña tienen descuento
+        return jsonify({'tiene_descuento': True, 'descuento': 15}), 200
+    else:
+        return jsonify({'tiene_descuento': False, 'descuento': 0}), 200
+
+#Endpoint para login de usuario
+@usuario_bp.route('/login', methods=['POST'])
+def login_usuario():
+    data = request.get_json()
+    email = data.get('email')
+    password = data.get('password')
+    
+    if not email or not password:
+        return jsonify({'error': 'Email y contraseña requeridos'}), 400
+    
+    usuario = usuario_service.verificar_credenciales(email, password)
+    if usuario:
+        return jsonify(usuario.to_dict()), 200
+    else:
+        return jsonify({'error': 'Credenciales inválidas'}), 401
     
