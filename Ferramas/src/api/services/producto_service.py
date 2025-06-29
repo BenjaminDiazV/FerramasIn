@@ -35,6 +35,28 @@ def obtener_producto_por_cat(categoria):
         productos.append(Producto(*row))
     return productos
 
+def obtener_producto_por_id(id_prod):
+    cur = mysql.connection.cursor()
+    try:
+        cur.execute("SELECT id_prod, nombre, categoria, marca, cod_marca, precio FROM productos WHERE id_prod = %s", (id_prod,))
+        data = cur.fetchone()
+        cur.close()
+        
+        if data:
+            precio = data[5]
+            if precio < 0:
+                data = list(data)
+                data[5] = abs(precio)
+            elif precio is None or precio == 0:
+                data = list(data)
+                data[5] = 0
+            return Producto(*data)
+        return None
+    except Exception as e:
+        cur.close()
+        print(f"Error al obtener producto por ID {id_prod}:", e)
+        return None
+
 def crear_producto(nombre, categoria, marca, precio):
     cur = mysql.connection.cursor()
     try:

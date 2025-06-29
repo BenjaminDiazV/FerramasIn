@@ -46,11 +46,15 @@ def crear_suscripcion(email):
 def crear_usuario(id_email, email, password=None, nombre=None):
     cur = mysql.connection.cursor()
     try:
+        print(f"DEBUG usuario_service: Creando usuario - Email: {email}, Nombre: {nombre}")
+        
         # Hash de la contraseña si se proporciona
         hashed_password = None
         if password:
             hashed_password = hashlib.sha256(password.encode()).hexdigest()
+            print(f"DEBUG usuario_service: Contraseña hasheada correctamente")
         
+        print(f"DEBUG usuario_service: Ejecutando INSERT - Email: {email}")
         cur.execute(
             "INSERT INTO usuarios (email, password, nombre) VALUES (%s, %s, %s)",
             (email, hashed_password, nombre)
@@ -58,11 +62,13 @@ def crear_usuario(id_email, email, password=None, nombre=None):
         mysql.connection.commit()
         id_email = cur.lastrowid
         cur.close()
-        # Devuelve el usuario creado como objeto Usuario
-        return Usuario(id_email, email, nombre=nombre)
+        
+        print(f"DEBUG usuario_service: Usuario creado exitosamente con ID: {id_email}")
+        # Devuelve el usuario creado como objeto Usuario (incluir la contraseña hasheada)
+        return Usuario(id_email, email, hashed_password, nombre)
     except Exception as e:
         cur.close()
-        print("Error al registrar usuario:", e)
+        print(f"ERROR usuario_service al registrar usuario {email}: {e}")
         return None
 
 def verificar_credenciales(email, password):

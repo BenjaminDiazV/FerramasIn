@@ -10,7 +10,8 @@ class Usuario:
         return {
             'id_email': self.id_email,
             'email': self.email,
-            'nombre': self.nombre
+            'nombre': self.nombre,
+            'password': '***' if self.password else None
         }
 
     

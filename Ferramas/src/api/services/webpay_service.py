@@ -12,6 +12,15 @@ class webpayService:
         )
         return {'url': response['url'], 'token': response['token']}
     
-    def confirmar_pago(self,token):
-        transaction = WebpayAPI.get_transaction()
-        return transaction.commit(token)
+    def confirmar_pago(self, token):
+        try:
+            transaction = WebpayAPI.get_transaction()
+            response = transaction.commit(token)
+            
+            # Log para debugging
+            print(f"DEBUG: Respuesta de Webpay commit: {response}")
+            
+            return response
+        except Exception as e:
+            print(f"ERROR en confirmar_pago: {e}")
+            return None
