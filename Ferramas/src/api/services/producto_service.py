@@ -8,17 +8,32 @@ def obtener_todos_productos():
     cur.close()
     productos = []
     for row in data:
+        precio = row[5]
+        if precio < 0:
+            row = list(row)
+            row[5] = abs(precio)
+        elif precio is None or precio == 0:
+            row = list(row)
+            row[5] = 0
         productos.append(Producto(*row))
     return productos
 
-def obtener_producto_por_id(id_prod):
+def obtener_producto_por_cat(categoria):
     cur = mysql.connection.cursor()
-    cur.execute("SELECT id_prod, nombre, categoria, marca, cod_marca, precio FROM productos WHERE id_prod = %s", (id_prod,))
-    data = cur.fetchone()
+    cur.execute("SELECT id_prod, nombre, categoria, marca, cod_marca, precio FROM productos WHERE categoria = %s", (categoria,))
+    data = cur.fetchall()
     cur.close()
-    if data:
-        return Producto(*data)
-    return None
+    productos = []
+    for row in data:
+        precio = row[5]
+        if precio < 0:
+            row = list(row)
+            row[5] = abs(precio)
+        elif precio is None or precio == 0:
+            row = list(row)
+            row[5] = 0
+        productos.append(Producto(*row))
+    return productos
 
 def crear_producto(nombre, categoria, marca, precio):
     cur = mysql.connection.cursor()

@@ -44,11 +44,11 @@ def get_productos():
     
     return jsonify(productos_json)
 
-@producto_bp.route('/<int:id_prod>', methods=['GET'])
-def get_producto(id_prod):
-    producto = producto_service.obtener_producto_por_id(id_prod)
-    if producto:
-        return jsonify(producto.to_json())
+@producto_bp.route('/<categoria>', methods=['GET'])
+def get_producto(categoria):
+    productos = producto_service.obtener_producto_por_cat(categoria)
+    if productos:
+        return jsonify([p.to_json() for p in productos])
     return jsonify({'message': 'Producto no encontrado'}), 404
 
 #agregar endpoint para obtener valor dolar
@@ -67,7 +67,11 @@ def get_dolar():
 #localhost:5000/productos/en_dolares
 @producto_bp.route('/en_dolares', methods=['GET'])
 def get_productos_en_dolares():
-    productos = producto_service.obtener_todos_productos()
+    categoria = request.args.get('categoria')
+    if categoria:
+        productos = producto_service.obtener_producto_por_cat(categoria)
+    else:
+        productos = producto_service.obtener_todos_productos()
     dolar = dolar_service.get_dolar_hoy()
     if hasattr(dolar, 'valor'):
         valor_dolar = dolar.valor
