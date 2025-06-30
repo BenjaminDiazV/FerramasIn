@@ -308,22 +308,6 @@ Correo: pagos@ferramas.cl`;
           >
             {mostrarDolares ? "USD" : "CLP"}
           </IonButton>
-
-          <IonButton
-            slot="end"
-            fill="outline"
-            color="secondary"
-            onClick={() => {
-              if (mostrarDolares) {
-                cargarProductosEnDolares(categoriaSeleccionada);
-              } else {
-                cargarProductos(categoriaSeleccionada);
-              }
-            }}
-            shape="round"
-          >
-            🔄
-          </IonButton>
         </IonToolbar>
       </IonHeader>
 
