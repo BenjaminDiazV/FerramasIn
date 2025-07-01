@@ -11,4 +11,4 @@ class DolarService:
             serie = data['serie'][0]
             return Dolar(fecha=serie['fecha'], valor=serie['valor'])
         except Exception as e:
-            return {'error obtencion dolar : -> ' + str(e)}
+            return {"error obtencion dolar : -> " + str(e): None}

@@ -9,12 +9,12 @@ def obtener_todos_productos():
     productos = []
     for row in data:
         precio = row[5]
-        if precio < 0:
-            row = list(row)
-            row[5] = abs(precio)
-        elif precio is None or precio == 0:
-            row = list(row)
+        row = list(row)
+        if precio is None or precio == 0:
             row[5] = 0
+        elif precio < 0:
+            row[5] = abs(precio)
+    # Si es válido, no se modifica
         productos.append(Producto(*row))
     return productos
 
@@ -26,12 +26,11 @@ def obtener_producto_por_cat(categoria):
     productos = []
     for row in data:
         precio = row[5]
-        if precio < 0:
-            row = list(row)
-            row[5] = abs(precio)
-        elif precio is None or precio == 0:
-            row = list(row)
+        row = list(row)
+        if precio is None or precio == 0:
             row[5] = 0
+        elif precio < 0:
+            row[5] = abs(precio)
         productos.append(Producto(*row))
     return productos
 
